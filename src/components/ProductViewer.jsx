@@ -1,5 +1,7 @@
 import clsx from "clsx";
 import useMacbookStore from "../store";
+import { Canvas } from "@react-three/fiber";
+import { Box, OrbitControls } from "@react-three/drei";
 
 const ProductViewer = () => {
   const { color, scale, setColor, setScale } = useMacbookStore();
@@ -52,6 +54,25 @@ const ProductViewer = () => {
           </div>
         </div>
       </div>
+
+      <Canvas
+        id="canvas"
+        camera={{ position: [0, 2, 5], fov: 50, near: 0.1, far: 100 }}
+        gl={{ antialias: true }}>
+        <ambientLight intensity={10} />
+        <pointLight position={[10, 10, 10]} intensity={1} />
+
+        <Box position={[0, 0, 0]} scale={10 * scale} material-color={color}>
+          <meshPhysicalMaterial
+            color={color}
+            metalness={0.8} // Makes it look like aluminum
+            roughness={0.2} // Keeps it shiny but not a mirror
+            clearcoat={1.0} // Adds that "glassy" top layer
+            clearcoatRoughness={0.1}
+          />
+        </Box>
+        <OrbitControls enableZoom={false} />
+      </Canvas>
     </section>
   );
 };
