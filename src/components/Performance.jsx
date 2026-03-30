@@ -42,7 +42,7 @@ const Performance = () => {
         scrollTrigger: {
           trigger: sectionEl,
           start: "top bottom",
-          end: "bottom top",
+          end: "center center",
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -53,7 +53,7 @@ const Performance = () => {
         if (item.id === "p5") return;
 
         const selector = `.${item.id}`;
-        const vars = {};
+        const vars = { opacity: 1, duration: 1 };
 
         if (typeof item.left === "number") vars.left = `${item.left}%`;
         if (typeof item.right === "number") vars.right = `${item.right}%`;
@@ -61,7 +61,7 @@ const Performance = () => {
 
         if (item.transform) vars.transform = item.transform;
 
-        tl.to(selector, vars, 0);
+        tl.fromTo(selector, { opacity: 0 }, vars, 0);
       });
     },
     { scope: sectionRef, dependencies: [isMobile] },
