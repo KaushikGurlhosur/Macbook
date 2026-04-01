@@ -41,6 +41,42 @@ const ModelScroll = () => {
         pin: true,
       },
     });
+
+    // SYNC THE FEATURE CONTENT
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#f-canvas",
+        start: "top center",
+        end: "bottom top",
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    // 3D SPIN
+    if (groupRef.current) {
+      modelTimeline.to(groupRef.current.rotation, {
+        y: Math.PI * 2,
+        ease: "power1.inOut",
+      });
+    }
+
+    // Content & Texture Sync
+    timeline
+      .call(() => setTexture("/videos/feature-1.mp4"))
+      .to(".box1", { opacity: 1, y: 0, delay: 1 })
+
+      .call(() => setTexture("/videos/feature-2.mp4"))
+      .to(".box2", { opacity: 1, y: 0 })
+
+      .call(() => setTexture("/videos/feature-3.mp4"))
+      .to(".box3", { opacity: 1, y: 0 })
+
+      .call(() => setTexture("/videos/feature-4.mp4"))
+      .to(".box4", { opacity: 1, y: 0 })
+
+      .call(() => setTexture("/videos/feature-5.mp4"))
+      .to(".box5", { opacity: 1, y: 0 });
   }, []);
 
   return (
@@ -61,12 +97,10 @@ const ModelScroll = () => {
 
 const Features = () => {
   return (
-    <section>
+    <section id="features">
       <h2>See it all in a new light</h2>
 
-      <Canvas
-        id="f-canvas"
-        camera={{ position: [0, 2, 5], fov: 30, near: 0.1, far: 100 }}>
+      <Canvas id="f-canvas" camera={{}}>
         <StudioLights />
         <ambientLight intensity={0.5} />
         // Add 3D models or other components here
@@ -78,7 +112,11 @@ const Features = () => {
           <div
             className={clsx("box", `box${index + 1}`, feature.styles)}
             key={index}>
-            {feature.text}
+            <img src={feature.icon} alt={feature.highlight} />
+            <p>
+              <span className="text-white">{feature.highlight}</span>
+              {feature.text}
+            </p>
           </div>
         ))}
       </div>
